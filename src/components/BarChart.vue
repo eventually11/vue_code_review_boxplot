@@ -1,10 +1,10 @@
-<!-- src/components/LineChart.vue -->
+<!-- src/components/BarChart.vue -->
 <script setup lang="ts">
-import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js';
+import { Bar } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 
 // 注册 Chart.js 模块
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale);
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 // 定义 Props，用于接收数据和标签
 const props = defineProps<{
@@ -26,8 +26,8 @@ const chartOptions = {
 
 <template>
   <div>
-    <!-- 渲染折线图 -->
-    <Line :data="{ labels: props.labels, datasets: props.datasets }" :options="chartOptions" />
+    <!-- 渲染柱状图 -->
+    <Bar :data="{ labels: props.labels, datasets: props.datasets }" :options="chartOptions" />
   </div>
 </template>
 
