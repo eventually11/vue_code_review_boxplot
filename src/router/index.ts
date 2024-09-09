@@ -1,16 +1,15 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
-
-import HomeView from '@/components/overview.vue'
-import MapView from '@/components/map.vue'
-import DailyView from '@/components/daily.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import BoxPlot from '../components/BoxPlot.vue';    // Import BoxPlot component
+import TableChart from '../components/TableChart.vue';  // Import TableChart component
 
 const routes = [
-    { path: '/', component: HomeView },
-    { path: '/map', component: MapView },
-    { path: '/daily', component: DailyView },
-]
+    { path: '/boxplot', component: BoxPlot },   // Route for BoxPlot
+    { path: '/tablechart', component: TableChart },  // Route for TableChart
+];
 
-export const router = createRouter({
-    history: createMemoryHistory(),
+const router = createRouter({
+    history: createWebHistory(),  // Use Web History API for navigation
     routes,
-})
+});
+
+export default router;
