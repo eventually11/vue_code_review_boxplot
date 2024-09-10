@@ -19,7 +19,7 @@ import { defineProps } from 'vue';
 
 // Define the props that the component will receive
 const props = defineProps({
-  tableData: Array  // 表格数据通过 props 传入
+  tableData: Array  
 });
 </script>
 

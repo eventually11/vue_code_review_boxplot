@@ -1,10 +1,9 @@
 <template>
   <div>
     <h1>Data Overview</h1>
-    <!--  -->
     <button @click="toggleComponent">Toggle Chart/Table</button>
-    
-    <!--  isTableChartVisible  -->
+
+    <!-- Display the table or the box plot depending on the state -->
     <OrderTable v-if="isTableChartVisible" :tableData="tableData" />
     <BoxPlot v-else :boxPlotConfig="boxPlotConfig" />
   </div>
@@ -12,23 +11,41 @@
 
 <script setup>
 import { ref } from 'vue';
-import OrderTable from './components/TableChart.vue';  // Import TableChart component
-import BoxPlot from './components/BoxPlot.vue';  // Import BoxPlot component
+import OrderTable from './components/TableChart.vue';
+import BoxPlot from './components/BoxPlot.vue';
+import { boxPlotData } from './domain/BoxPlot/boxplot.js';  // Import boxplot data
+import { tableData as tableDataSource } from './domain/TableChart/tableData.js';
 
-import { tableData as tableDataSource } from './domain/TableChart/tableData.js';  // Import table data
-import { boxPlotConfig } from './domain/BoxPlot/boxplot.js';  // Import box plot configuration
+// Control the visibility of the table and box plot
+const isTableChartVisible = ref(true);
 
-// Define reactive state for which component to show
-const isTableChartVisible = ref(true);  // Initially show table chart
-
-// Define reactive data for table
+// Table data source
 const tableData = ref(tableDataSource);
 
-// Toggle function to switch between components
+// Define the box plot configuration, including type, data, and options
+const boxPlotConfig = ref({
+  data: {
+    labels: ['Category 1', 'Category 2', 'Category 3'],
+    datasets: [{
+      label: 'Observations',
+      data: boxPlotData,  // Pass the box plot data here
+      borderColor: 'rgba(0, 123, 255, 1)',
+      backgroundColor: 'rgba(0, 123, 255, 0.5)',
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Box Plot Example'
+    }
+  }
+});
+
+// Function to toggle between the table and the box plot
 const toggleComponent = () => {
   isTableChartVisible.value = !isTableChartVisible.value;
 };
-console.log('tableData in App.vue:', tableData.value);
 </script>
 
 <style scoped>
