@@ -1,14 +1,25 @@
+import { boxPlotData } from './box_plot_data';  
 
-// define a dummy_data class for dummy_repository to return
 
-export class DummyData {
-  private _data: string;
-
-  constructor(data: string) {
-    this._data = data;
+const chartConfig = {
+  type: 'boxplot',  
+  data: {
+    labels: ['Category 1', 'Category 2', 'Category 3'],  
+    datasets: [{
+      label: 'Observations',
+      data: boxPlotData,  
+      borderColor: 'rgba(0, 123, 255, 1)',
+      backgroundColor: 'rgba(0, 123, 255, 0.5)',
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Box Plot Example'
+    }
   }
+};
 
-  data(): string {
-    return this._data;
-  }
-}
+
+console.log('Box plot chart configuration:', chartConfig);

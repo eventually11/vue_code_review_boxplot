@@ -1,14 +1,14 @@
+// box_plot_repository.ts
+import { BoxPlotDataSourceInterface } from './box_plot_data_source_interface';
 
-// define a dummy_data class for dummy_repository to return
+export class BoxPlotRepository {
+  private dataSource: BoxPlotDataSourceInterface;
 
-export class DummyData {
-  private _data: string;
-
-  constructor(data: string) {
-    this._data = data;
+  constructor(dataSource: BoxPlotDataSourceInterface) {
+    this.dataSource = dataSource;
   }
 
-  data(): string {
-    return this._data;
+  async getBoxPlotData(): Promise<any[]> {
+    return this.dataSource.fetchBoxPlotData();
   }
 }

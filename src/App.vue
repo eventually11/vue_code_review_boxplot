@@ -10,28 +10,22 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import OrderTable from './components/TableChart.vue';
 import BoxPlot from './components/BoxPlot.vue';
-import { boxPlotData } from './domain/BoxPlot/boxplot.js';  // Import boxplot data
-import { tableData as tableDataSource } from './domain/TableChart/tableData.js';
 
 // Control the visibility of the table and box plot
 const isTableChartVisible = ref(true);
 
-// Table data source
-const tableData = ref(tableDataSource);
+// Table data source, initially empty
+const tableData = ref([]);
 
-// Define the box plot configuration, including type, data, and options
+// Box plot config, initially empty
 const boxPlotConfig = ref({
   data: {
-    labels: ['Category 1', 'Category 2', 'Category 3'],
-    datasets: [{
-      label: 'Observations',
-      data: boxPlotData,  // Pass the box plot data here
-      borderColor: 'rgba(0, 123, 255, 1)',
-      backgroundColor: 'rgba(0, 123, 255, 0.5)',
-    }]
+    labels: [],
+    datasets: []
   },
   options: {
     responsive: true,
@@ -46,6 +40,29 @@ const boxPlotConfig = ref({
 const toggleComponent = () => {
   isTableChartVisible.value = !isTableChartVisible.value;
 };
+
+// Fetch data from API on component mount
+onMounted(async () => {
+  try {
+    // Fetch table data from API
+    const tableResponse = await axios.get('https://api.example.com/table-data');
+    tableData.value = tableResponse.data;
+
+    // Fetch box plot data from API
+    const boxPlotResponse = await axios.get('https://api.example.com/boxplot-data');
+    boxPlotConfig.value.data = {
+      labels: ['Category 1', 'Category 2', 'Category 3'],
+      datasets: [{
+        label: 'Observations',
+        data: boxPlotResponse.data,  // Use API response for box plot data
+        borderColor: 'rgba(0, 123, 255, 1)',
+        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+      }]
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+});
 </script>
 
 <style scoped>

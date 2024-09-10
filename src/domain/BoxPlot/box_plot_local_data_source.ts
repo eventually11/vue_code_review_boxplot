@@ -1,14 +1,10 @@
+// box_plot_local_data_source.ts
+import { BoxPlotDataSourceInterface } from './box_plot_data_source_interface';
+import { boxPlotData } from './box_plot_data';
 
-// define a dummy_data class for dummy_repository to return
-
-export class DummyData {
-  private _data: string;
-
-  constructor(data: string) {
-    this._data = data;
-  }
-
-  data(): string {
-    return this._data;
+export class BoxPlotLocalDataSource implements BoxPlotDataSourceInterface {
+  async fetchBoxPlotData(): Promise<any[]> {
+  
+    return Promise.resolve(boxPlotData);
   }
 }
