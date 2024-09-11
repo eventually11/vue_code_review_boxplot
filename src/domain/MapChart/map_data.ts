@@ -1,6 +1,7 @@
-import { boxPlotData } from './boxplot.js';  
+import { boxPlotData } from './box_plot_data';  
 
-export const chartConfig = {  // Added export here
+
+const chartConfig = {
   type: 'boxplot',  
   data: {
     labels: ['Category 1', 'Category 2', 'Category 3'],  
@@ -19,5 +20,6 @@ export const chartConfig = {  // Added export here
     }
   }
 };
+
 
 console.log('Box plot chart configuration:', chartConfig);
