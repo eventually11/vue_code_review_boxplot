@@ -3,9 +3,10 @@
     <h1>Data Overview</h1>
     <button @click="toggleComponent">Toggle Chart/Table</button>
 
-    <!-- Display the table or the box plot depending on the state -->
+    <!-- Display the table, box plot, or map depending on the state -->
     <OrderTable v-if="isTableChartVisible" :tableData="tableData" />
-    <BoxPlot v-else :boxPlotConfig="boxPlotConfig" />
+    <BoxPlot v-else-if="isBoxPlotVisible" :boxPlotConfig="boxPlotConfig" />
+    <MapChart v-else :mapData="mapData" />
   </div>
 </template>
 
@@ -14,51 +15,52 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import OrderTable from './components/TableChart.vue';
 import BoxPlot from './components/BoxPlot.vue';
+import MapChart from './components/MapChart.vue';  // Import the MapChart component
 
-// Control the visibility of the table and box plot
+// Control the visibility of the table, box plot, and map
 const isTableChartVisible = ref(true);
+const isBoxPlotVisible = ref(false);
 
-// Table data source, initially empty
+// Data sources for table, box plot, and map
 const tableData = ref([]);
+const boxPlotConfig = ref({ data: { labels: [], datasets: [] }, options: { responsive: true, title: { display: true, text: 'Box Plot Example' } } });
+const mapData = ref([]);  // For the map chart
 
-// Box plot config, initially empty
-const boxPlotConfig = ref({
-  data: {
-    labels: [],
-    datasets: []
-  },
-  options: {
-    responsive: true,
-    title: {
-      display: true,
-      text: 'Box Plot Example'
-    }
-  }
-});
-
-// Function to toggle between the table and the box plot
+// Function to toggle between table and box plot/map
 const toggleComponent = () => {
-  isTableChartVisible.value = !isTableChartVisible.value;
+  if (isTableChartVisible.value) {
+    isTableChartVisible.value = false;
+    isBoxPlotVisible.value = true;
+  } else if (isBoxPlotVisible.value) {
+    isBoxPlotVisible.value = false;
+  } else {
+    isTableChartVisible.value = true;
+  }
 };
 
 // Fetch data from API on component mount
 onMounted(async () => {
   try {
-    // Fetch table data from API
+    // Fetch table data
     const tableResponse = await axios.get('https://api.example.com/table-data');
     tableData.value = tableResponse.data;
 
-    // Fetch box plot data from API
+    // Fetch box plot data
     const boxPlotResponse = await axios.get('https://api.example.com/boxplot-data');
     boxPlotConfig.value.data = {
       labels: ['Category 1', 'Category 2', 'Category 3'],
       datasets: [{
         label: 'Observations',
-        data: boxPlotResponse.data,  // Use API response for box plot data
+        data: boxPlotResponse.data,
         borderColor: 'rgba(0, 123, 255, 1)',
         backgroundColor: 'rgba(0, 123, 255, 0.5)',
       }]
     };
+
+    // Fetch map data
+    const mapResponse = await axios.get('https://api.example.com/map-data');
+    mapData.value = mapResponse.data;
+
   } catch (error) {
     console.error('Error fetching data:', error);
   }

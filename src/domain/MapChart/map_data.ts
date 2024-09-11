@@ -1,25 +1,31 @@
-import { boxPlotData } from './box_plot_data';  
+import { mapData } from './map.js';  // Import the map data from map.js
 
-
-const chartConfig = {
-  type: 'boxplot',  
+export const chartConfig = {
+  type: 'bar',  // Assuming a bar chart for map data visualization
   data: {
-    labels: ['Category 1', 'Category 2', 'Category 3'],  
-    datasets: [{
-      label: 'Observations',
-      data: boxPlotData,  
-      borderColor: 'rgba(0, 123, 255, 1)',
-      backgroundColor: 'rgba(0, 123, 255, 0.5)',
-    }]
+    labels: mapData.map(item => item.year),  // Extracting year for labels
+    datasets: [
+      {
+        label: 'Series 1',
+        data: mapData.map(item => item.series1),  // Data for Series 1
+        borderColor: 'rgba(0, 123, 255, 1)',
+        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+      },
+      {
+        label: 'Series 2',
+        data: mapData.map(item => item.series2),  // Data for Series 2
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ]
   },
   options: {
     responsive: true,
     title: {
       display: true,
-      text: 'Box Plot Example'
-    }
-  }
+      text: 'Map Data Chart Example',
+    },
+  },
 };
 
-
-console.log('Box plot chart configuration:', chartConfig);
+console.log('Map chart configuration:', chartConfig);
