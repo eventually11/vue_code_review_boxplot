@@ -3,11 +3,11 @@
     <h1>Data Overview</h1>
     <button @click="toggleComponent">Toggle Chart/Table</button>
 
-    <!-- Display the table, box plot, map, or funnel chart depending on the state -->
+    <!-- Display the table, box plot, map, or area chart depending on the state -->
     <OrderTable v-if="isTableChartVisible" :tableData="tableData" />
     <BoxPlot v-else-if="isBoxPlotVisible" :boxPlotConfig="boxPlotConfig" />
     <MapChart v-else-if="isMapChartVisible" :mapData="mapData" />
-    <FunnelChart v-else :funnelData="funnelData" />
+    <AreaChart v-else :areaChartData="areaChartData" />
   </div>
 </template>
 
@@ -16,21 +16,21 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import OrderTable from './components/TableChart.vue';
 import BoxPlot from './components/BoxPlot.vue';
-import MapChart from './components/MapChart.vue';  
-import FunnelChart from './components/FunnelChart.vue';  // Import the FunnelChart component
+import MapChart from './components/MapChart.vue';
+import AreaChart from './components/AreaChart.vue';  // Import the AreaChart component
 
-// Control the visibility of the table, box plot, map, and funnel chart
+// Control the visibility of the table, box plot, map, and area chart
 const isTableChartVisible = ref(true);
 const isBoxPlotVisible = ref(false);
 const isMapChartVisible = ref(false);
 
-// Data sources for table, box plot, map, and funnel chart
+// Data sources for table, box plot, map, and area chart
 const tableData = ref([]);
 const boxPlotConfig = ref({ data: { labels: [], datasets: [] }, options: { responsive: true, title: { display: true, text: 'Box Plot Example' } } });
 const mapData = ref([]);
-const funnelData = ref([]);  // For the funnel chart
+const areaChartData = ref([]);  // For the area chart
 
-// Function to toggle between table, box plot, map, and funnel chart
+// Function to toggle between table, box plot, map, and area chart
 const toggleComponent = () => {
   if (isTableChartVisible.value) {
     isTableChartVisible.value = false;
@@ -68,9 +68,9 @@ onMounted(async () => {
     const mapResponse = await axios.get('https://api.example.com/map-data');
     mapData.value = mapResponse.data;
 
-    // Fetch funnel chart data
-    const funnelResponse = await axios.get('https://api.example.com/funnel-data');
-    funnelData.value = funnelResponse.data;
+    // Fetch area chart data
+    const areaResponse = await axios.get('https://api.example.com/area-data');
+    areaChartData.value = areaResponse.data;
 
   } catch (error) {
     console.error('Error fetching data:', error);
