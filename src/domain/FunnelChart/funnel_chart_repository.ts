@@ -1,13 +1,17 @@
-import { IMapDataSource } from './map_data_source_interface.ts';
+import { FunnelChartDataSource } from './funnel_chart_data_source';
+import { FunnelChartLocalDataSource } from './funnel_chart_local_data_source';
 
-export class MapRepository {
-  private dataSource: IMapDataSource;
+export class FunnelChartRepository {
+  private remoteDataSource: FunnelChartDataSource;
+  private localDataSource: FunnelChartLocalDataSource;
 
-  constructor(dataSource: IMapDataSource) {
-    this.dataSource = dataSource;
+  constructor() {
+    this.remoteDataSource = new FunnelChartDataSource();
+    this.localDataSource = new FunnelChartLocalDataSource();
   }
 
-  getMapData() {
-    return this.dataSource.getMapData();
+  async getFunnelChartData() {
+    const remoteData = await this.remoteDataSource.getFunnelChartData();
+    return remoteData.length ? remoteData : this.localDataSource.getFunnelChartData();
   }
 }

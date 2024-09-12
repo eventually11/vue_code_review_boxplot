@@ -1,3 +1,3 @@
-export interface IMapDataSource {
-  getMapData(): Array<{ lat: number; lng: number; intensity: number }>;
+export interface IFunnelChartDataSource {
+  getFunnelChartData(): Promise<{ stage: string; value: number }[]>;
 }

@@ -1,7 +1,14 @@
-import { mapData } from './map_data.ts';
+import axios from 'axios';
+import { funnelChartData } from './funnel_chart_data';
 
-export class MapDataSource {
-  getMapData() {
-    return mapData;
+export class FunnelChartDataSource {
+  async getFunnelChartData() {
+    try {
+      const response = await axios.get('https://api.example.com/funnel-data');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching funnel data, using default data:', error);
+      return funnelChartData;
+    }
   }
 }

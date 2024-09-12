@@ -1,8 +1,8 @@
-import { mapData } from './map_data.ts';
-import { IMapDataSource } from './map_data_source_interface.ts';
+import { funnelChartData } from './funnel_chart_data';
+import { IFunnelChartDataSource } from './funnel_chart_data_source_interface';
 
-export class MapLocalDataSource implements IMapDataSource {
-  getMapData() {
-    return mapData;
+export class FunnelChartLocalDataSource implements IFunnelChartDataSource {
+  async getFunnelChartData() {
+    return funnelChartData;
   }
 }
