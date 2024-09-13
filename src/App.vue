@@ -3,11 +3,13 @@
     <h1>Data Overview</h1>
     <button @click="toggleComponent">Toggle Chart/Table</button>
 
-    <!-- Display the table, box plot, map, or area chart depending on the state -->
+    <!-- Display the table, box plot, map, area chart, bubble chart, or order tendency chart depending on the state -->
     <OrderTable v-if="isTableChartVisible" :tableData="tableData" />
     <BoxPlot v-else-if="isBoxPlotVisible" :boxPlotConfig="boxPlotConfig" />
     <MapChart v-else-if="isMapChartVisible" :mapData="mapData" />
-    <AreaChart v-else :areaChartData="areaChartData" />
+    <AreaChart v-else-if="isAreaChartVisible" :areaChartData="areaChartData" />
+    <BubbleChart v-else-if="isBubbleChartVisible" :bubbleChartData="bubbleChartData" />
+    <OrderTendencyChart v-else :orderTendencyData="orderTendencyData" />
   </div>
 </template>
 
@@ -17,20 +19,26 @@ import axios from 'axios';
 import OrderTable from './components/TableChart.vue';
 import BoxPlot from './components/BoxPlot.vue';
 import MapChart from './components/MapChart.vue';
-import AreaChart from './components/AreaChart.vue';  // Import the AreaChart component
+import AreaChart from './components/AreaChart.vue';
+import BubbleChart from './components/BubbleChart.vue'; // Import the BubbleChart component
+import OrderTendencyChart from './components/OrderTendencyChart.vue'; // Import the OrderTendencyChart component
 
-// Control the visibility of the table, box plot, map, and area chart
+// Control the visibility of the table, box plot, map, area chart, bubble chart, and order tendency chart
 const isTableChartVisible = ref(true);
 const isBoxPlotVisible = ref(false);
 const isMapChartVisible = ref(false);
+const isAreaChartVisible = ref(false);
+const isBubbleChartVisible = ref(false);
 
-// Data sources for table, box plot, map, and area chart
+// Data sources for table, box plot, map, area chart, bubble chart, and order tendency chart
 const tableData = ref([]);
 const boxPlotConfig = ref({ data: { labels: [], datasets: [] }, options: { responsive: true, title: { display: true, text: 'Box Plot Example' } } });
 const mapData = ref([]);
-const areaChartData = ref([]);  // For the area chart
+const areaChartData = ref([]);
+const bubbleChartData = ref([]);  // For the bubble chart
+const orderTendencyData = ref([]);  // For the order tendency chart
 
-// Function to toggle between table, box plot, map, and area chart
+// Function to toggle between table, box plot, map, area chart, bubble chart, and order tendency chart
 const toggleComponent = () => {
   if (isTableChartVisible.value) {
     isTableChartVisible.value = false;
@@ -40,6 +48,12 @@ const toggleComponent = () => {
     isMapChartVisible.value = true;
   } else if (isMapChartVisible.value) {
     isMapChartVisible.value = false;
+    isAreaChartVisible.value = true;
+  } else if (isAreaChartVisible.value) {
+    isAreaChartVisible.value = false;
+    isBubbleChartVisible.value = true;
+  } else if (isBubbleChartVisible.value) {
+    isBubbleChartVisible.value = false;
   } else {
     isTableChartVisible.value = true;
   }
@@ -71,6 +85,14 @@ onMounted(async () => {
     // Fetch area chart data
     const areaResponse = await axios.get('https://api.example.com/area-data');
     areaChartData.value = areaResponse.data;
+
+    // Fetch bubble chart data
+    const bubbleResponse = await axios.get('https://api.example.com/bubble-data');
+    bubbleChartData.value = bubbleResponse.data;
+
+    // Fetch order tendency chart data
+    const orderTendencyResponse = await axios.get('https://api.example.com/order-tendency-data');
+    orderTendencyData.value = orderTendencyResponse.data;
 
   } catch (error) {
     console.error('Error fetching data:', error);
